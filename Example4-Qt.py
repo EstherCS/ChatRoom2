@@ -11,7 +11,7 @@ class Main(QMainWindow, assignment.Ui_MainWindow):
         self.Send.clicked.connect(self.send)
 
     def send(self):
-        text=self.lineEdit.text()
+        text=self.Text.text()
         self.Body.append(text)
         self.Body.update()
         self.Text.setText("")
