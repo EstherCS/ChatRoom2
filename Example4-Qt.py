@@ -33,7 +33,7 @@ class Main(QMainWindow, assignment.Ui_MainWindow):
         self.Login.setEnabled(False)
         self.Send.setEnabled(True)
         self.Text.setEnabled(True)
-        #th1 = threading.Thread(target=c.sendThreadFunc,args=(text,))
+        th1 = threading.Thread(target=c.sendThreadFunc,args=(text,))
         #th2 = threading.Thread(target=c.recvThreadFunc)
         #threads = [th1, th2]
         #for t in threads:
@@ -44,7 +44,7 @@ class Main(QMainWindow, assignment.Ui_MainWindow):
 
     def send(self):
         text=self.Text.text()
-        self.Body.append("                                                              "+text)
+        self.Body.append("                                                              "+text+":You")
         self.Body.update()
         #self.sock.send(text.encode())
         self.Text.setText("")
