@@ -4,21 +4,6 @@ import sys
 import socket
 import threading
 
-# def main(name):
-    #print("Welcome to chat room!")
-    #name = input("Input your nickname : ")
-    #print("Now Let's Chat, ",name)
-    #c = Client('localhost', 5550, name)
-
-    #self.sock.send(name.encode())
-    # th1 = threading.Thread(target=c.sendThreadFunc,args=(name,))
-    # th2 = threading.Thread(target=c.recvThreadFunc)
-    # threads = [th1, th2]
-    # for t in threads:
-    #     t.setDaemon(True)
-    #     t.start()
-    # t.join()
-
 class Main(QMainWindow, assignment.Ui_MainWindow):
 
     def __init__(self):
@@ -29,7 +14,8 @@ class Main(QMainWindow, assignment.Ui_MainWindow):
 
         self.Send.setText("Send")
         self.Send.clicked.connect(self.send)
-
+        self.Send.setEnabled(False)
+        self.Text.setEnabled(False)
 
     def login(self):
         text=self.InputName.text()
@@ -45,12 +31,22 @@ class Main(QMainWindow, assignment.Ui_MainWindow):
         self.InputName.setText("")
         self.InputName.setEnabled(False)
         self.Login.setEnabled(False)
+        self.Send.setEnabled(True)
+        self.Text.setEnabled(True)
+        #th1 = threading.Thread(target=c.sendThreadFunc,args=(text,))
+        #th2 = threading.Thread(target=c.recvThreadFunc)
+        #threads = [th1, th2]
+        #for t in threads:
+        #    t.setDaemon(True)
+        #    t.start()
+        #t.join()
 
 
     def send(self):
         text=self.Text.text()
-        self.Body.append(text)
+        self.Body.append("                                                              "+text)
         self.Body.update()
+        #self.sock.send(text.encode())
         self.Text.setText("")
 
 class Client:
