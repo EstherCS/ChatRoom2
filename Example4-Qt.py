@@ -23,6 +23,8 @@ class Main(QMainWindow, assignment.Ui_MainWindow):
         self.Body.append("Now Lets Chat, "+text)
         self.Body.update()
         self.InputName.setText("")
+        self.InputName.setEnabled(False)
+        self.Login.setEnabled(False)
 
     def send(self):
         text=self.Text.text()
