@@ -23,9 +23,17 @@ class Ui_MainWindow(object):
         self.Name = QtWidgets.QLabel(self.centralwidget)
         self.Name.setGeometry(QtCore.QRect(30, 70, 51, 16))
         self.Name.setObjectName("Name")
-        self.InputName = QtWidgets.QTextEdit(self.centralwidget)
+
+        self.InputName = QtWidgets.QLineEdit(self.centralwidget)
         self.InputName.setGeometry(QtCore.QRect(90, 50, 111, 51))
         self.InputName.setObjectName("InputName")
+
+        # self.InputName = QtWidgets.QLineEdit(self.centralwidget)
+        # self.InputName.setGeometry(QtCore.QRect(90, 50, 111, 51))
+        # self.InputName.setObjectName("InputName")
+
+
+
         self.Login = QtWidgets.QPushButton(self.centralwidget)
         self.Login.setGeometry(QtCore.QRect(210, 50, 81, 51))
         self.Login.setObjectName("Login")
