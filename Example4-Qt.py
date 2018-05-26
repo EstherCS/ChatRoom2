@@ -1,17 +1,49 @@
 from PyQt5.QtWidgets import QMainWindow, QApplication
+from PyQt5.QtCore import QThread, pyqtSignal
 import assignment
 import sys
 import socket
+import time
 import threading
 
-class Main(QMainWindow, assignment.Ui_MainWindow):
+class TutorialThread(QThread):
+    received = pyqtSignal(str)
 
+    def __init__(self):
+        QThread.__init__(self)
+
+    def __del__(self):
+        self.wait()
+
+    def connect(self, host, port, name):
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.sock = sock
+        self.sock.connect((host, port))
+        self.sock.send(name.encode())
+
+    #receive server's send's others massages
+    def run(self):
+        while True:
+            try:
+                otherword = self.sock.recv(1024)  # socket.recv(recv_size)
+                # print(otherword.decode())
+                self.received.emit(otherword.decode())
+            except ConnectionAbortedError:
+                print('Server closed this connection!')
+
+            except ConnectionResetError:
+                print('Server is closed!')
+
+class Main(QMainWindow, assignment.Ui_MainWindow):
+    name = str  #save user name
     def __init__(self):
         super(self.__class__, self).__init__()
         self.setupUi(self)
+        self._tutorial_thread = TutorialThread()
+        self._tutorial_thread.received.connect(self.receive)
+
         self.Login.setText("Login")
         self.Login.clicked.connect(self.login)
-
         self.Send.setText("Send")
         self.Send.clicked.connect(self.send)
         self.Send.setEnabled(False)
@@ -19,64 +51,41 @@ class Main(QMainWindow, assignment.Ui_MainWindow):
 
     def login(self):
         text=self.InputName.text()
-        #self.Body.append(text)
-        #self.Body.update()
-        #self.InputName.setText("")
+        self.name = str(text)
         self.Body.append("Welcome to chat room! "+text)
         self.Body.update()
         self.Body.append("Now Lets Chat, "+text)
         self.Body.update()
-        c = Client('localhost', 5550, text)
-        #main(text)
+
         self.InputName.setText("")
         self.InputName.setEnabled(False)
         self.Login.setEnabled(False)
         self.Send.setEnabled(True)
         self.Text.setEnabled(True)
-        th1 = threading.Thread(target=c.sendThreadFunc,args=(text,))
-        #th2 = threading.Thread(target=c.recvThreadFunc)
-        #threads = [th1, th2]
-        #for t in threads:
-        #    t.setDaemon(True)
-        #    t.start()
-        #t.join()
+
+        #start to receive others massages
+        self._tutorial_thread.connect('localhost', 5552, text)
+        self.start()
+
+    def start(self):
+        self._tutorial_thread.start()
+
+    def stop(self):
+        self._tutorial_thread.terminate()
 
 
     def send(self):
         text=self.Text.text()
         self.Body.append("                                                              "+text+":You")
         self.Body.update()
-        #self.sock.send(text.encode())
+        mes = self.name + ": "+ str(text)
+        self._tutorial_thread.sock.send(mes.encode())
         self.Text.setText("")
 
-class Client:
-    def __init__(self, host, port, name):
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.sock = sock
-        self.sock.connect((host, port))
-        self.sock.send(name.encode())
+    def receive(self, data):
+        self.Body.append(str(data))
+        self.Body.update()
 
-    def sendThreadFunc(self,name):
-        while True:
-            try:
-                myword = name + ":" + input()
-                self.sock.send(myword.encode())
-
-            except ConnectionAbortedError:
-                print('Server closed this connection!')
-            except ConnectionResetError:
-                print('Server is closed!')
-
-    def recvThreadFunc(self):
-        while True:
-            try:
-                otherword = self.sock.recv(1024) # socket.recv(recv_size)
-                print(otherword.decode())
-            except ConnectionAbortedError:
-                print('Server closed this connection!')
-
-            except ConnectionResetError:
-                print('Server is closed!')
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
