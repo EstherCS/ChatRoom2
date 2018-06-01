@@ -117,8 +117,13 @@ class Main(QMainWindow, assignment.Ui_MainWindow):
         self.Text.setText("")
 
     def receive(self, data):
-        self.Body.append(str(data))
+        temp, temp2 = data.split(',', 1)
+        self.Body.append(str(temp))
         self.Body.update()
+        self.people.setText("")
+        self.people.append(str(temp2))
+        self.people.update()
+
 
 
 if __name__ == "__main__":
