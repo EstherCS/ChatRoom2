@@ -26,9 +26,10 @@ class Ui_MainWindow(object):
         self.SPassword = QtWidgets.QLineEdit(self.centralwidget)
         self.SPassword.setGeometry(QtCore.QRect(230, 30, 121, 20))
         self.SPassword.setObjectName("SPassword")
-        self.SBody = QtWidgets.QLineEdit(self.centralwidget)
+        self.SBody = QtWidgets.QTextBrowser(self.centralwidget)
         self.SBody.setGeometry(QtCore.QRect(30, 90, 321, 281))
         self.SBody.setObjectName("SBody")
+
         self.Add = QtWidgets.QPushButton(self.centralwidget)
         self.Add.setGeometry(QtCore.QRect(30, 60, 321, 23))
         self.Add.setObjectName("Add")
