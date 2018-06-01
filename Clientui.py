@@ -43,7 +43,7 @@ class Ui_MainWindow(object):
         self.Body.setObjectName("Body")
         self.text = QtWidgets.QLineEdit(self.centralwidget)
         self.text.setGeometry(QtCore.QRect(10, 540, 691, 51))
-        self.text.setObjectName("text")
+        self.text.setObjectName("Text")
         self.Send = QtWidgets.QPushButton(self.centralwidget)
         self.Send.setGeometry(QtCore.QRect(10, 602, 691, 31))
         self.Send.setObjectName("Send")
