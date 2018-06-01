@@ -5,6 +5,35 @@ import sys
 import socket
 import time
 import threading
+class DataBaseChatRoom:
+    def __init__(self):
+        self.client = MongoClient('localhost', 27017)  # 比较常用
+        self.database = self.client["ChatRoom"]  # SQL: Database Name
+        self.collection = self.database["user"]  # SQL: Table Name
+
+    def loadData(self):
+        pass
+        return None
+
+    # delete user by uname
+    # dbChatRoom.deleteUser(['A'])
+    def deleteUser(self, unameList=None):
+        pass
+        return 'successful'
+
+    # insert user
+    # dbChatRoom.insertUser(uname='A', upwd='A')
+    def insertUser(self, uname, upwd):
+        userList = []
+        userList.append({'uname': uname, 'upwd': upwd})
+        self.collection.insert(userList)
+        print("success")
+
+    def updataUser(self, uname, upwd):
+        self.collection.remove({'uname': uname}) #remove account
+        userList = []
+        userList.append({'uname': uname, 'upwd': upwd})
+        self.collection.insert(userList)
 
 class TutorialThread(QThread):
     received = pyqtSignal(str)
@@ -44,6 +73,10 @@ class Main(QMainWindow, assignment.Ui_MainWindow):
 
         self.Login.setText("Login")
         self.Login.clicked.connect(self.login)
+        
+        self.UpdateP.setText("UpdatePassword")
+        self.UpdateP.clicked.connect(self.changepassword)
+        
         self.Send.setText("Send")
         self.Send.clicked.connect(self.send)
         self.Send.setEnabled(False)
