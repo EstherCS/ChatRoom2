@@ -17,12 +17,13 @@ class Server:
         connection, addr = self.sock.accept()
         print('Accept a new connection', connection.getsockname(), connection.fileno())
         print("Online: ", len(self.mylist)+1, "user(s)")
+        #self.tellOthers("Online",len(self.mylist)+1)
         try:
             buf = connection.recv(1024).decode()
             #if buf == '1':
                 # start a thread for new connection
-            temp = "SYSTEM: " + buf + " in the chat room."
-            self.tellOthers(connection.fileno(), temp)
+            temp = "SYSTEM: " + buf + " in the chat room." + " ," + "Online : " + str(len(self.mylist)+1)
+            self.tellOthers("222", temp)
             mythread = threading.Thread(target=self.subThreadIn, args=(connection, connection.fileno()))
             mythread.setDaemon(True)
             mythread.start()
@@ -42,6 +43,7 @@ class Server:
                 except:
                     pass
 
+
     def subThreadIn(self, myconnection, connNumber):
         self.mylist.append(myconnection)
         while True:
@@ -57,6 +59,7 @@ class Server:
                 try:
                     self.mylist.remove(myconnection)
                     print(len(self.mylist))
+
                 except:
                     pass
 
@@ -65,6 +68,7 @@ class Server:
 
 def main():
     s = Server('localhost', 5552)
+
     while True:
         s.checkConnection()
 
